@@ -43,23 +43,66 @@ function init() {
                 return init();
             });
         } else if ('View all roles' === res.options) {
-            db.query(`SELECT title, id, department_id, salary FROM role`, function(err, results){
+            db.query(`SELECT role.title, role.id, role.salary, department.name AS department_id
+            FROM  role
+            JOIN department ON role.department_id = department.id;`, function(err, results){ 
             console.table(results);
             return init();
             });
-        }
-            else if ('View all employees' === res.options) {
-            db.query(`SELECT first_name, last_name FROM employee`, function (err, results) {
+        } else if ('View all employees' === res.options) {
+            db.query(`SELECT first_name, last_name FROM employee`, function (err, results) { //needs updated query
                 console.table(results);
                 return init();
             });
-         } //else if ('Add a department' === res.options) {
-        //     // Prompt user to input department name
+        } else if ('Add a department' === res.options) {
+            // Prompt user to input department name
+            inquirer
+            .prompt([{
+                type: 'input',
+                message: 'Enter department name:',
+                name: 'newDepartment',
+            }])
+             // Insert into db
+            .then((res) => {
+                db.query(`INSERT INTO department(name) VALUES (?)`, res.newDepartment, function (err, results){
+                    console.table(results);
+                    return init();
+                });
+            });
+            
+        }// else if ('Add a role' === res.options) {
+        //      // Prompt user to input title, salary, department id
+        //      inquirer
+        //      .prompt([
+        //         {
+        //             type: 'input',
+        //             message: 'Enter job title:',
+        //             name: 'title',
+        //         },
+        //         {
+        //             type: 'input',
+        //             message: 'Enter salary:',
+        //             name: 'salary',
+        //         },
+        //         {
+        //             type: 'list',
+        //             message: 'Select a department:',
+        //             choices: [
+        //                 db.query(`SELECT * FROM department`, function(err, results) {
+        //                     console.log(results)
+        //                 })
+        //             ],
+        //             name: 'department'
+        //         },
+        //     ])     
         //     // Insert into db
-        // } else if ('Add a role' === res.options) {
-        //     // Prompt user to input title, salary, department id
-        //     // Insert into db
-        // } else if ('Add an employee' === res.options) {
+        //     .then((res) => {
+        //         db.query(`INSERT INTO role(title, salary, department_id) VALUES (?, ?, ?)`, res.title, res.salary, res.department, function (err, results){
+        //             console.table(results);
+        //             return init();
+        //         });
+        //     });  
+        // } // else if ('Add an employee' === res.options) {
         //     // Prompt user to input first name, last name, role id, manager id
         //     // Insert into db
         // } else ('Update an employee role' === res.otpions) {
