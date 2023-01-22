@@ -15,7 +15,7 @@ This application is a content management system used view, interact with, and ud
 - [Questions](#questions)
 
 ## Installation
-To install the application, first require the necessary packages by running npm i.
+To install the application, first require the necessary packages by running npm i. Then using a MySQL shell, create the database, tables and seed the data.
 
 ## Usage
 To use the application, start the server by running node index.js in the command line. Then toggle through various options to view, interact with and update the employee database.
