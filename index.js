@@ -100,33 +100,33 @@ async function init() {
                     const [role] = await db.promise().query(`SELECT title AS name, id AS value FROM role`);
                     const [manager] = await db.promise().query(`SELECT CONCAT(first_name, "_", last_name) AS name, manager_id AS value FROM employee`); // query not working
                     const res = await inquirer.prompt([
-                            {
-                                type: 'input',
-                                message: 'Enter first name:',
-                                name: 'firstName',
-                            },
-                            {
-                                type: 'input',
-                                message: 'Enter last name:',
-                                name: 'lastName',
-                            },
-                            {
-                                type: 'list',
-                                message: 'Select a role',
-                                choices: role,
-                                name: 'role'
-                            },
-                            {
-                                type: 'list',
-                                message: 'Select a manager',
-                                chocies: manager,
-                                name: 'manager'
-                            }
+                        {
+                            type: 'input',
+                            message: 'Enter first name:',
+                            name: 'firstName',
+                        },
+                        {
+                            type: 'input',
+                            message: 'Enter last name:',
+                            name: 'lastName',
+                        },
+                        {
+                            type: 'list',
+                            message: 'Select a role',
+                            choices: role,
+                            name: 'role'
+                        },
+                        {
+                            type: 'list',
+                            message: 'Select a manager',
+                            chocies: manager,
+                            name: 'manager'
+                        }
                     ]);
                     const [results] = await db.promise().query(`INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [res.first_name, res.last_name, res.role, res.manager])
                     console.table(results);
                     return init();
-                
+
                 } else if ('Update an employee role' === res.options) {
                     const [employee] = await db.promise().query(`SELECT CONCAT(first_name, "_", last_name) AS name, id AS value FROM employee`)
                     const [role] = await db.promise().query(`SELECT title AS name, id AS value FROM role`)
